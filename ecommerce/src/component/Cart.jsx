@@ -19,7 +19,7 @@ function Cart() {
 
             const items = { name: name }
 
-            const response = await fetch('http://localhost:3000/cart', {
+            const response = await fetch('https://e-commerce-1-0yf6.onrender.com/cart', {
                 method: 'POST',
                 body: JSON.stringify(items),
                 headers: { 'Content-Type': 'application/json' }
@@ -39,7 +39,7 @@ function Cart() {
 
         const items = { name: name, nameofprod: i.name }
 
-        const response2 = await fetch('http://localhost:3000/delcart', {
+        const response2 = await fetch('https://e-commerce-1-0yf6.onrender.com/delcart', {
             method: 'POST',
             body: JSON.stringify(items),
             headers: { 'Content-Type': 'application/json' }

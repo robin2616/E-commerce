@@ -10,7 +10,7 @@ function Userdetail(){
    
         const items={name:name}
     
-        const response = await fetch('http://localhost:3000/userdetail',{
+        const response = await fetch('https://e-commerce-1-0yf6.onrender.com/userdetail',{
             method: 'POST',
             body: JSON.stringify(items),
             headers: {'Content-Type': 'application/json'}

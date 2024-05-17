@@ -24,7 +24,7 @@ function ViewProduct({ onclose, i }) {
 
       const items = { name: xuv.name }
 
-      const response = await fetch('http://localhost:3000/showreview', {
+      const response = await fetch('https://e-commerce-1-0yf6.onrender.com/showreview', {
         method: 'POST',
         body: JSON.stringify(items),
         headers: { 'Content-Type': 'application/json' }
@@ -70,7 +70,7 @@ function ViewProduct({ onclose, i }) {
 
           const items = { name: name, cartitem: xuv }
 
-          const response = await fetch('http://localhost:3000/view', {
+          const response = await fetch('https://e-commerce-1-0yf6.onrender.com/view', {
             method: 'POST',
             body: JSON.stringify(items),
             headers: { 'Content-Type': 'application/json' }
@@ -117,7 +117,7 @@ function ViewProduct({ onclose, i }) {
 
           const items = { name: xuv.name, personname: name, value: reviewval }
 
-          const response = await fetch('http://localhost:3000/review', {
+          const response = await fetch('https://e-commerce-1-0yf6.onrender.com/review', {
             method: 'POST',
             body: JSON.stringify(items),
             headers: { 'Content-Type': 'application/json' }

@@ -52,7 +52,7 @@ function Item() {
 
 
 
-            const response = await fetch('http://localhost:3000/prod', {
+            const response = await fetch('https://e-commerce-1-0yf6.onrender.com/prod', {
                 method: 'POST',
                 body: JSON.stringify(),
                 headers: { 'Content-Type': 'application/json' }

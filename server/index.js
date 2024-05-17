@@ -4,7 +4,7 @@ const mongoose=require('mongoose');
 const port=10000;
 const cors=require('cors');
  const bodyParser=require('body-parser');
-
+console.log("hello world");
  app.use(cors());
  app.use(bodyParser.json());
 

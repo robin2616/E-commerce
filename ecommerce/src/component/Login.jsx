@@ -10,7 +10,7 @@ function Login() {
 
     const logindetail = { email: a }
 
-    const response = await fetch('http://localhost:3000/log', {
+    const response = await fetch('https://e-commerce-1-0yf6.onrender.com/log', {
       method: 'POST',
       body: JSON.stringify(logindetail),
       headers: { 'Content-Type': 'application/json' }

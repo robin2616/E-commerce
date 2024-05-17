@@ -31,7 +31,7 @@ useEffect(()=>{
 
     const items = { name: name,street: street,pincode:pin,city: city,state: state,adress: adress,phon: phon,altphon:altphon}
   
-    const response2 = await fetch('http://localhost:3000/buy2', {
+    const response2 = await fetch('https://e-commerce-1-0yf6.onrender.com/buy2', {
         method: 'POST',
         body: JSON.stringify(items),
         headers: { 'Content-Type': 'application/json' }
