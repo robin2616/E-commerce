@@ -10,7 +10,7 @@ console.log("hello world");
 
 main().catch(err=>console.log(err))
 async function main(){
-    await mongoose.connect('mongodb+srv://robin:MHyEKXpl9Fllad6@cluster0.s82s4hz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+    await mongoose.connect('mongodb+srv://robinkumardbg11:MHyEKXpl9Fllad6@first.qxoadwq.mongodb.net/?retryWrites=true&w=majority&appName=First')
     console.log("db connected")
 }
 
