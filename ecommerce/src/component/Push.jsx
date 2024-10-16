@@ -3,7 +3,7 @@ function Push(){
     return(<>
          <button onClick={async()=>{
              
-             const response = await fetch('https://e-commerce-1-0yf6.onrender.com/push',{
+             const response = await fetch('http://localhost:10000/push',{
                 method: 'POST',
                 body: JSON.stringify(detail),
                 headers: {'Content-Type': 'application/json'}

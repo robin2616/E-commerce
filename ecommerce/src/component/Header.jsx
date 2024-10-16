@@ -1,111 +1,115 @@
-
 import { FaRegUserCircle } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import { IoMdSearch } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import  "/src/css/Header.module.css";
-import { Mycontext } from "../context/Mycontext";
 import { FaBorderNone } from "react-icons/fa6";
+import { useContext, useState, useEffect } from "react";
+import { Mycontext } from "../context/Mycontext";
 
+function Header() {
+  const { name, addnameinmenu } = useContext(Mycontext);
 
+  const [hovered, updatehovered] = useState(false);
+  const [userhovered, updateuserhovered] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-
-
-function Header(){
-  const {name,addnameinmenu}=useContext(Mycontext)
-  const userdetail=()=>{
-    if(name=="Login"){window.open("/log","_self")}
-    else{window.open("/user","_self")}
-  }
-
-
-  const [hovered,updatehovered]=useState(false)
-  const updatetrue=()=>{updatehovered(true)}
-  const updatefalse=()=>{updatehovered(false)}
-  const [userhovered,updateuserhovered]=useState(false)
-  const updateusertrue=()=>{updateuserhovered(true)}
-  const updateuserfalse=()=>{updateuserhovered(false)}
-
-  useEffect(()=>{
-    if(name==="Login"){
-      updateuserhovered(false)
+  const userdetail = () => {
+    if (name === "Login") {
+      window.open("/log", "_self");
+    } else {
+      window.open("/user", "_self");
     }
-  
+  };
 
-  })
-  
-    return(<>
-    <div className="h-[70px] w-full bg-blue-100 drop-shadow-xl rounded-lg	font-serif">
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
+  useEffect(() => {
+    if (name === "Login") {
+      updateuserhovered(false);
+    }
+  }, [name]);
 
-<a href="/" className="fixed  no-underline top-4 left-14 italic font-bold font-Poppins text-3xl">
-  <h3 className="shadow-3xl text-black">CMART</h3></a>
+  return (
+    <div className="relative bg-blue-100 w-full h-16 md:h-20 px-4 md:px-8 shadow-md">
+      <div className="flex flex-row items-center justify-between gap-2 h-full">
+        {/* Logo */}
+        <span className="text-2xl md:text-4xl font-bold">Cucie</span>
 
+        {/* Search Bar */}
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <input
+            type="text"
+            className="rounded-md h-10 px-4 w-full md:w-72 border-2 border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500 transition"
+            placeholder="Search Here..."
+          />
+          <IoMdSearch className="text-2xl text-gray-500 cursor-pointer hover:text-indigo-500 transition" />
+        </div>
 
-<div >
-    <span><IoMdSearch className="border-black text-xl fixed top-3 h-[38px] w-[35px] translate-x-[220px] translate-y-[4px] bg-blue-100  rounded-lg z-10  "/></span>
-  <input type="text" className="fixed top-4 rounded-lg w-[530px] h-[38px] translate-x-[260px] focus:border-red-500 shadow-3xl
-  " placeholder="             Search Here . . .  " list="listofitemstosearch"  >
-    
-  </input>
-</div>
+        {/* Icons on the right */}
+        <div className="flex items-center gap-3">
+          {/* User Info */}
+          <div
+            onMouseEnter={() => updateuserhovered(true)}
+            onMouseLeave={() => updateuserhovered(false)}
+            className="hidden md:flex md:mr-6 items-center gap-2 cursor-pointer bg-green-500 p-2 rounded-xl"
+          >
+            <span className="text-lg font-semibold">{name === "Login" ? "Guest" : "Robin"}</span>
+            <FaRegUserCircle className="text-3xl" />
+          </div>
 
-<datalist className="w-[500px] bg-red-200" id="listofitemstosearch">
-  <option  value="iphone x"></option>
-  <option value="samsung s20"></option>
-  <option value="Dell Series"></option>
-  <option value="Nokia 420"></option>
-  <option value="Accessories"></option>
-</datalist>
+          {/* Cart Icon */}
+          <FiShoppingCart className="text-2xl md:mr-6 md:text-3xl cursor-pointer hover:text-indigo-500 transition" />
 
-<div className="h-8 w-[160px] hover:scale-105 bg-zinc-700 fixed top-5 rounded-lg translate-x-[820px]">
+          {/* Menu Icon */}
+          <HiDotsVertical
+            className="text-2xl md:text-3xl cursor-pointer hover:text-indigo-500 transition"
+            onClick={toggleMenu}
+          />
+        </div>
+      </div>
 
-<button onClick={userdetail} onMouseEnter={updateusertrue} onMouseLeave={updateuserfalse} className="text-[19px] text-white no-underline fixed top-[15px] translate-y-[-12px]
- translate-x-[35px] font-medium font-serif hover:scale-110">{name}</button>
+      {/* Dropdown Menu for small screens */}
+      {menuOpen && (
+        <div className="absolute top-16 right-4 bg-white shadow-lg rounded-md py-2 w-40 md:hidden">
+          <ul>
+            <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">User Profile</li>
+            <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer" onClick={() => addnameinmenu("Login")}>
+              Log Out
+            </li>
+          </ul>
+        </div>
+      )}
 
-<span className="text-white text-2xl fixed top-1 left-[105px]"><MdKeyboardArrowDown/></span>
-  <div className="text-3xl h-8 fixed top-0 rounded-lg bg-indigo-500 translate-y-[0.1px] translate-x-[130px]"><FaRegUserCircle /></div>
-</div>
+      {/* Hover Menu for User */}
+      {userhovered && (
+        <div
+          className="hidden md:block absolute top-20 right-8 bg-white shadow-lg rounded-md py-2 w-48"
+          onMouseEnter={() => updateuserhovered(true)}
+          onMouseLeave={() => updateuserhovered(false)}
+        >
+          <ul>
+            <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">User Profile</li>
+            <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer" onClick={() => addnameinmenu("Login")}>
+              Log Out
+            </li>
+          </ul>
+        </div>
+      )}
 
-<div className=" fixed top-5 rounded-lg right-[225px]">
-  <button onClick={()=>{window.open("/booking","_self")}}><FaBorderNone className="text-2xl translate-y-[0px] translate-x-3 hover:scale-125"/></button>
-</div>
-<span className=" fixed top-10 rounded-lg right-[205px] font-medium ">Order</span>
-
-<a href="/cart" className="fixed top-4 translate-x-[1100px] text-4xl text-black  "><FiShoppingCart className=" hover:scale-110"/></a>
-
-<div className="h-5 w-5 bg-blue-100 fixed top-2 translate-x-[1130px] translate-y-[-4px] rounded-full ">
-</div>
-<button onMouseEnter={updatetrue} onMouseLeave={updatefalse}  className="fixed top-5 text-3xl translate-x-[1200px] "><HiDotsVertical className="hover:scale-110"/></button>
-
-<nav>
-  {userhovered &&
-<ul onMouseEnter={updateusertrue} onMouseLeave={updateuserfalse} className=" text-xl font-medium fixed top-[52px] w-[160px] right-[283px] bg-white shadow-2xl rounded-lg" >
-  <li className="p-2 translate-x-[-10px] hover:text-blue-500 " ><button onClick={()=>{window.open("/user","_self")}}>User Profile</button></li>
-  <li className="p-2 translate-x-[-10px]  hover:text-blue-500 "><button onClick={()=>{addnameinmenu("Login")}}>Log Out</button></li>
-
-</ul>}
-</nav>
-
-
-<nav>
-{hovered &&
-<ul onMouseEnter={updatetrue} onMouseLeave={updatefalse} className=" text-xl font-medium fixed top-10 w-[180px] right-8 bg-white shadow-2xl rounded-lg" >
-  <li className="p-2 translate-x-[-10px]  hover:text-blue-500" ><button onClick={()=>{window.open("/contact","_self")}}>Contact Us</button></li>
- 
-</ul>}
-</nav>
-
-
-
-
-
-
-
-
-</div>
-    </>)
+      {/* Hover Menu for Other Options */}
+      {hovered && (
+        <div
+          className="absolute top-16 right-4 bg-white shadow-lg rounded-md py-2 w-40 hidden md:block"
+          onMouseEnter={() => updatehovered(true)}
+          onMouseLeave={() => updatehovered(false)}
+        >
+          <ul>
+            <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">Contact Us</li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
+
 export default Header;

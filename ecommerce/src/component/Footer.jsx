@@ -1,49 +1,45 @@
-import { FaWhatsapp } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
+import { FaWhatsapp, FaInstagram, FaYoutube, FaFacebook } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
-import { FaFacebook } from "react-icons/fa";
 
+function Footer() {
+    return (
+        <footer className="bg-slate-800 text-white py-3 px-4 mt-10">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                {/* Contact Info */}
+                <div>
+                    <h2 className="text-2xl font-semibold ">Contact Us</h2>
+                    <p>Phone: 7091071889</p>
+                    <p>Email: manyakumar26@gmail.com</p>
+                </div>
 
+                {/* Office Address */}
+                <div>
+                    <h2 className="text-2xl font-semibold">Office Address</h2>
+                    <p>Flat No: 32-B</p>
+                    <p>Amber Hostel</p>
+                    <p>IIT DHANBAD</p>
+                    <p>846002</p>
+                </div>
 
-function Footer(){
-    return(<>
-<div className="h-[200px] mt-10 rounded-lg w-full bg-slate-800 relative top-[100%] text-white text-">
+                {/* Social Media Links */}
+                <div>
+                    <h2 className="text-2xl font-semibold justify-center mb-2">Follow Us</h2>
+                    <ul className="flex justify-center md:justify-start gap-4 text-3xl">
+                        <li className="text-pink-500 transition"><FaInstagram /></li>
+                        <li className="text-green-400 transition"><FaWhatsapp /></li>
+                        <li className="text-red-500 transition"><FaYoutube /></li>
+                        <li className="text-blue-500 transition"><RiTwitterXLine /></li>
+                        <li className="text-blue-700 transition"><FaFacebook /></li>
+                    </ul>
+                </div>
+            </div>
 
-<div>
-    <span className="text-[20px]">Contact Us:</span><br/>
-    <span>Phone No: 7091071889 <br/>
-    Email : manyakumar26@gmail.com</span>
-
-</div> 
-
-<div className="relative left-[400px]  top-[-70px]">
-    <span className="text-[20px]">Office Adress:</span><br/>
-    <span>Flat No : 32-B<br/>
-        Amber Hostel<br/>
-    IIT DHANBAD<br/>
-    846002</span>
-    
-</div>
-
-<div className="relative left-[900px] top-[-190px]" >
-    <span className="text-[20px]">Social Media Handle</span>
-    <div className="text-2xl translate-x-[-40px] translate-y-3 ">
-    <ul className="flex flex-row gap-3 ">
-    <li><FaInstagram/></li>
-    <li><FaWhatsapp/></li>
-    <li><FaYoutube/></li>
-    <li><RiTwitterXLine/></li>
-    <li><FaFacebook/></li>
-    </ul>
-    </div>
-    
-</div>
-   
-   
-   </div>
-
-
-    </>)
+            {/* Footer Bottom */}
+            <div className="mt-8 text-center text-sm border-t border-gray-700 pt-4">
+                &copy; {new Date().getFullYear()} Cucie. All Rights Reserved.
+            </div>
+        </footer>
+    );
 }
+
 export default Footer;

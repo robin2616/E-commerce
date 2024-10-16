@@ -10,7 +10,7 @@ function Booked(){
 
             const items = { name: name }
 
-            const response = await fetch('https://e-commerce-1-0yf6.onrender.com/buyfind', {
+            const response = await fetch('http://localhost:10000/buyfind', {
                 method: 'POST',
                 body: JSON.stringify(items),
                 headers: { 'Content-Type': 'application/json' }

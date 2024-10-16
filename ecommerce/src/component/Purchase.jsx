@@ -1,198 +1,129 @@
-import { useContext, useState,useEffect } from "react"
-import { Mycontext } from "../context/Mycontext"
+import { useContext, useState, useEffect } from "react";
+import { Mycontext } from "../context/Mycontext";
 import { GoPlus } from "react-icons/go";
 import { TiMinus } from "react-icons/ti";
 import Orderplaced from "./Orderplaced";
-import { RxPinLeft } from "react-icons/rx";
 
-function Purchase(){
+function Purchase() {
+  const { buy, name } = useContext(Mycontext);
+  const [quantity, setQuantity] = useState(1);
+  const [showOrder, setShowOrder] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [formData, setFormData] = useState({
+    nam: "",
+    street: "",
+    pin: "",
+    city: "",
+    state: "",
+    address: "",
+    phon: "",
+    altphon: "",
+  });
 
-const {buy,name}=useContext(Mycontext)
-const [a,b]=useState(1)
-const [showorder,updorder]=useState(false)
-console.log(buy)
-const [showadress,updshowadress]=useState(true)
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      const response = await fetch('http://localhost:10000/buy2');
+      const data = await response.json();
+      setSavedAddresses(data);
+    };
+    fetchAddresses();
+  }, []);
 
-const[nam,updname]=useState()
-const[street,updstreet]=useState()
-const[pin,updpin]=useState()
-const[city,updcity]=useState()
-const[adress,updadress]=useState()
-const[state,upsstate]=useState()
-const[phon,updphon]=useState()
-const[altphon,updaltphon]=useState()
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-const [addresstoshow,updasresstoshow]=useState([])
+  const handleOrderSubmission = async () => {
+    setShowOrder(true);
+    const { nam, street, pin, city, state, address, phon, altphon } = formData;
 
-
-useEffect(()=>{
-
-  const sendingtodb=async()=>{
-
-    const items = { name: name,street: street,pincode:pin,city: city,state: state,adress: adress,phon: phon,altphon:altphon}
-  
-    const response2 = await fetch('https://e-commerce-1-0yf6.onrender.com/buy2', {
-        method: 'POST',
-        body: JSON.stringify(items),
-        headers: { 'Content-Type': 'application/json' }
-    })
-  
-   
-    const findedone2 = await response2.json()
-    updasresstoshow(findedone2.at(0).adress)
-  
-  
-  }
-  sendingtodb()
-
-
-
-},[])
-
-const sendingtodb=async()=>{
-
-  updorder(true)
-  const items = { name: name,street: street,pincode:pin,city: city,state: state,adress: adress,phon: phon,altphon:altphon}
-
-  const response = await fetch('http://localhost:3000/buy', {
+    const items = { name: nam, street, pincode: pin, city, state, address, phon, altphon };
+    
+    // Sending address to server
+    await fetch('http://localhost:10000/buy', {
       method: 'POST',
       body: JSON.stringify(items),
       headers: { 'Content-Type': 'application/json' }
-  })
+    });
 
-  const findedone = await response.json()
-
-  const itemforbooking={name:name,buy:buy}
-  const response3 = await fetch('http://localhost:3000/book', {
+    // Booking the item
+    const itemForBooking = { name, buy };
+    await fetch('http://localhost:10000/book', {
       method: 'POST',
-      body: JSON.stringify(itemforbooking),
+      body: JSON.stringify(itemForBooking),
       headers: { 'Content-Type': 'application/json' }
-  })
-  const findedone3 = await response3.json()
-  console.log(findedone3)
+    });
+  };
 
+  return (
+    <>
+      <div className="flex flex-col items-center">
+        <img src={buy.image} className="h-[250px] w-[300px] m-10 border-yellow-200 border-2 rounded-lg shadow-lg" alt="Product" />
+        <h2 className="font-bold text-xl">{buy.name}</h2>
+        <h2 className="text-2xl bg-yellow-200 inline p-1 rounded-lg">Rs.{buy.price}</h2>
+        <div className="flex items-center gap-3 mt-4">
+          <button onClick={() => setQuantity(quantity + 1)} className="text-xl p-2 border border-gray-400 rounded hover:bg-gray-200">
+            <GoPlus className="text-2xl" />
+          </button>
+          <h1 className="text-xl font-semibold">{quantity}</h1>
+          <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)} className="text-xl p-2 border border-gray-400 rounded hover:bg-gray-200">
+            <TiMinus className="text-2xl" />
+          </button>
+        </div>
 
-
-}
-
-console.log(addresstoshow)
-
-
-
-    return(<>
-    
-   <img src={buy.image} className="h-[250px] w-[300px] m-10 border-yellow-200 border-2" alt="no" />
-     <h2 className="relative font-bold left-24 top-[-30px]">{buy.name}</h2>
-     <h2 className="relative left-28 top-[-20px] text-2xl bg-yellow-200 inline p-1 rounded-lg">Rs.{buy.price}</h2>
-     <div className="flex flex-row gap-3 translate-x-[130px] ">
-     <button  onClick={() => { b(a + 1) }} className="text-xl"><GoPlus className=" border-black border-2 text-2xl p-1 rounded-sm" /></button>
-    <h1 className="text-xl font-semibold ">{a}</h1>
-     <button onClick={() => { 
-        if(a==1){
-            b(1)
-        }
-        else{
-        b(a - 1) }}} className="text-xl "><TiMinus className=" border-black border-2 text-2xl p-1 rounded-sm" /></button>
-     </div>
-
-     <div className="bg-blue-50 border-black border-3 h-auto w-[600px] translate-y-[-410px] translate-x-[490px] ">
-      <span className="flex justify-center font-semibold text-2xl shadow-2xl ">Saved Adress </span>
-      <div className="w-[600px] h-[200px]  border-black border-2" >
-        {addresstoshow.map((i)=>(
-          <>
-          
-          <div className="flex flex-col">
-            <span>{i.name}</span>
-            <span>{i.street}</span>
-            <span>{i.adress}</span>
-            <span>{i.city}</span>
-            <span>{i.state}</span>
-            <span>{i.pincode}</span>
-            <span>{i.phon}</span>
-            <span>{i.altphon}</span>
-            <button className="bg-blue-500 p-2 w-[100px] rounded-xl font-semibold text-xl translate-x-[490px] translate-y-[-48px]">Order</button>
+        <div className="bg-blue-50 border border-gray-300 w-full max-w-md p-4 mt-5 rounded-lg shadow-md">
+          <span className="flex justify-center font-semibold text-xl">Saved Addresses</span>
+          <div className="max-h-48 overflow-y-auto mt-2">
+            {savedAddresses.map((address, index) => (
+              <div key={index} className="flex flex-col border-b border-gray-300 pb-2 mb-2">
+                <span>{address.name}</span>
+                <span>{address.street}</span>
+                <span>{address.address}</span>
+                <span>{address.city}</span>
+                <span>{address.state}</span>
+                <span>{address.pincode}</span>
+                <span>{address.phon}</span>
+                <span>{address.altphon}</span>
+                <button className="bg-blue-500 p-2 mt-2 rounded-lg font-semibold text-white">Order</button>
+              </div>
+            ))}
           </div>
-          </>
-        ))
+        </div>
 
-        }
+        <div className="bg-blue-50 rounded-md border border-gray-300 w-full max-w-md mt-5 p-4 shadow-lg">
+          <span className="flex justify-center text-2xl font-bold">Place Order</span>
+          <form className="flex flex-col gap-3 mt-4">
+            {Object.entries(formData).map(([key, value]) => (
+              <div key={key} className="form-floating mb-3">
+                <input
+                  type="text"
+                  name={key}
+                  className="form-control border border-gray-400 rounded p-2"
+                  value={value}
+                  onChange={handleInputChange}
+                  placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+                  required
+                />
+                <label htmlFor={key} className="text-gray-600">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+              </div>
+            ))}
+            <button onClick={handleOrderSubmission} type="button" className="bg-blue-500 p-2 rounded-lg font-semibold text-white mt-4">Save Address and Order Now</button>
+          </form>
+        </div>
+
+        <div className="flex flex-col gap-3 font-semibold text-xl shadow-md h-[320px] w-[320px] bg-yellow-50 border border-gray-300 rounded-lg mt-5">
+          <span className="m-2 text-2xl">Purchase Detail</span>
+          <span className="m-2">Price (1 item): Rs. {buy.price}</span>
+          <span className="m-2">Price ({quantity} items): Rs. {buy.price * quantity}</span>
+          <span className="m-2">Delivery Charge: FREE</span>
+          <span className="m-2 bg-orange-300 p-2 rounded-2xl">Total: Rs. {buy.price * quantity}</span>
+        </div>
+
+        {showOrder && <Orderplaced quantity={quantity} buy={buy} />}
       </div>
-      
-     </div>
-
-<div className="h-[500px] w-[750px] bg-blue-50 rounded-md relative border-black border-3 translate-y-[-300px] translate-x-[400px]">
-
-    <span className=" flex justify-center text-4xl shadow-2xl pt-3 font-bold">Place Order</span>
-
-
-<div className="flex flex-col gap-2 m-10 fixed left-8">
-
-<div class="form-floating mb-3 w-[280px]">
-  <input type="text" class="form-control" value={nam} onChange={(e)=>{updname(e.target.value)}} id="floatingInput" placeholder="name@example.com" required/>
-  <label htmlFor="floatingInput">Name</label>
-</div>
-
-<div class="form-floating mb-3 w-[280px] ">
-  <input type="text" class="form-control" value={pin} onChange={(e)=>{updpin(e.target.value)}} id="floatingInput" placeholder="name@example.com"/>
-  <label for="floatingInput">Pincode</label>
-</div>
-
-<div class="form-floating mb-3 w-[280px] ">
-  <input type="text" class="form-control " value={adress} onChange={(e)=>{updadress(e.target.value)}} id="floatingInput" placeholder="name@example.com"/>
-  <label for="floatingInput">Adress</label>
-</div>
-
-<div class="form-floating mb-3 w-[280px] ">
-  <input type="text" class="form-control" value={phon} onChange={(e)=>{updphon(e.target.value)}} id="floatingInput" placeholder="name@example.com"/>
-  <label for="floatingInput">Phone No</label>
-</div>
-
-
-</div>
-
- 
-<div className="flex flex-col gap-2 m-10 fixed translate-x-[350px]">
-
-<div class="form-floating mb-3 w-[280px]">
-  <input type="text" class="form-control" value={street} onChange={(e)=>{updstreet(e.target.value)}} id="floatingInput" placeholder="name@example.com"/>
-  <label for="floatingInput">Street</label>
-</div>
-
-<div class="form-floating mb-3 w-[280px] ">
-  <input type="text" class="form-control" value={city} onChange={(e)=>{updcity(e.target.value)}} id="floatingInput" placeholder="name@example.com"/>
-  <label for="floatingInput">City</label>
-</div>
-
-<div class="form-floating mb-3 w-[280px]">
-  <input type="text" class="form-control" value={state} onChange={(e)=>{upsstate(e.target.value)}} id="floatingInput" placeholder="name@example.com"/>
-  <label for="floatingInput">State</label>
-</div>
-
-<div class="form-floating mb-3 w-[280px] ">
-  <input type="text" class="form-control" value={altphon} onChange={(e)=>{updaltphon(e.target.value)}} id="floatingInput" placeholder="name@example.com" required/>
-  <label for="floatingInput">Alternate Phone No</label>
-</div>
-
-
-</div>
-
-<button onClick={sendingtodb} className="bg-blue-500 p-2 rounded-lg font-semibold fixed top-[430px] left-[35%]">Save Adress and order now</button>
-
-
-
-</div>
-
-
-<div className=" flex flex-col gap-3 font-semibold text-xl shadow-2xl h-[320px] w-[320px] bg-yellow-50 border-black border-3 rounded-lg relative top-[-700px] ml-10">
-<span className="m-2 relative left-16 text-2xl">Purchase Detail</span>
-<span className="m-2 relative left-3 text-xl">Price (1 item) : Rs. {buy.price}</span>
-<span className="m-2 relative left-3 text-xl">Price ({a} item): Rs.{buy.price*a}</span>
-<span className="m-2 relative left-3 text-xl">Delivery charge :FREE</span>
-<span className="m-2 relative left-0  text-xl rounded-2xl bg-orange-300 p-2">Total : Rs.{buy.price*a}</span>
-</div>
-
-
-{showorder && <Orderplaced a={a} buy={buy}/> }
-    </>)
+    </>
+  );
 }
-export default Purchase
+
+export default Purchase;
